@@ -2,10 +2,10 @@
 CURRENT_SHELL=$(basename "$SHELL")
 
 # Get the directory of the current script
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALLER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Determine the path to the b++ script
-BPP_SCRIPT="/usr/bin/python3 $SCRIPT_DIR/b++.py"
+BPP_SCRIPT="/usr/bin/python3 $INSTALLER_DIR/../common/cpp/b++.py";
 
 # Determine the user's shell configuration file
 if [ "$CURRENT_SHELL" = "zsh" ]; then
