@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Determine the user's current shell
 CURRENT_SHELL=$(basename "$SHELL")
 
@@ -33,11 +31,4 @@ else
     echo "Alias b++ has been added to $SHELL_CONFIG"
 fi
 
-# Source the shell configuration file to apply changes
-if [ "$CURRENT_SHELL" = "zsh" ]; then
-    source "$HOME/.zshrc"
-elif [ "$CURRENT_SHELL" = "bash" ]; then
-    source "$HOME/.bashrc"
-fi
-
-echo "Installation complete. You can now use the 'b++' command."
+echo "Installation complete. Please run 'source $SHELL_CONFIG' to reload your shell configuration and use the 'b++' command."
