@@ -1,8 +1,11 @@
 import os, sys
 
 if __name__ == "__main__":
-    script_name = sys.argv[1]
+    script_file = os.path.expanduser(sys.argv[1])
+    code_dir, script_name = os.path.split(script_file)
     program_name = script_name.replace(".cpp", "")
-    if not os.path.exists("./bin"):
-        os.makedirs("./bin")
-    os.system("g++ {} -o bin/{}".format(script_name, program_name))
+    bin_dir = os.path.join(code_dir, "bin")
+    program_file = os.path.join(bin_dir, program_name)
+    if not os.path.exists(bin_dir):
+        os.makedirs(bin_dir)
+    os.system("g++ {} -o {}".format(script_file, program_file))
