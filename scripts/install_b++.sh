@@ -7,7 +7,7 @@ CURRENT_SHELL=$(basename "$SHELL")
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Determine the path to the b++ script
-BPP_SCRIPT_PATH="$SCRIPT_DIR/../common/cpp/b++"
+BPP_SCRIPT="/usr/bin/python3 $SCRIPT_DIR/b++.py"
 
 # Determine the user's shell configuration file
 if [ "$CURRENT_SHELL" = "zsh" ]; then
@@ -29,7 +29,7 @@ if grep -q "alias b++=" "$SHELL_CONFIG"; then
     echo "Alias b++ already exists in $SHELL_CONFIG"
 else
     # Add the alias to the shell configuration file using double quotes
-    echo "alias b++=\"$BPP_SCRIPT_PATH\"" >> "$SHELL_CONFIG"
+    echo "alias b++=\"$BPP_SCRIPT\"" >> "$SHELL_CONFIG"
     echo "Alias b++ has been added to $SHELL_CONFIG"
 fi
 
