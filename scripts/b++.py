@@ -1,7 +1,7 @@
 import os, sys
 
 if __name__ == "__main__":
-    script_file = os.path.expanduser(sys.argv[1])
+    script_file = os.path.abspath(os.path.expanduser(sys.argv[1]))
     code_dir, script_name = os.path.split(script_file)
     program_name = script_name.replace(".cpp", "")
     bin_dir = os.path.join(code_dir, "bin")
