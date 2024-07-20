@@ -1,3 +1,32 @@
 get_script_dir() {
   echo "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 }
+
+get_shell_config() {
+  CURRENT_SHELL=$(basename "$SHELL")
+  if [ "$CURRENT_SHELL" = "zsh" ]; then
+    echo "$HOME/.zshrc"
+  elif [ "$CURRENT_SHELL" = "bash" ]; then
+    echo "$HOME/.bashrc"
+  else
+    echo "Unsupported shell ($CURRENT_SHELL). Please run this script using either bash or zsh."
+    exit 1
+  fi
+}
+
+add_alias_to_shell_config() {
+  local alias_name=$1
+  local script_path=$2
+  local shell_config=$3
+
+  if [ ! -f "$shell_config" ]; then
+    touch "$shell_config"
+  fi
+
+  if grep -q "alias $alias_name=" "$shell_config"; then
+    echo "Alias $alias_name already exists in $shell_config"
+  else
+    echo "alias $alias_name=\"$script_path\"" >> "$shell_config"
+    echo "Alias $alias_name has been added to $shell_config"
+  fi
+}
