@@ -1,5 +1,7 @@
 get_script_dir() {
-  echo "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  # If BASH_SOURCE is not set or empty, use $0 instead
+  local source="${BASH_SOURCE[1]:-$0}"
+  echo "$(cd "$(dirname "$source")" && pwd)"
 }
 
 get_shell_config() {
@@ -30,3 +32,9 @@ add_alias_to_shell_config() {
     echo "Alias $alias_name has been added to $shell_config"
   fi
 }
+
+handle_error() {
+    echo "FAILED"
+    exit 1
+}
+
