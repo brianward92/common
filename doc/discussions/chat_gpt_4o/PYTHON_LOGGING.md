@@ -89,10 +89,10 @@ To achieve this, you need to override the `format` method in `CustomFormatter`. 
 class CustomFormatter(logging.Formatter):
     LONG_LINE_LEN = 1000
     LONG_LINE_MRK = "LINF"
-    LINE_INFO_PRL = ceil(log10(LONG_LINE_LEN))
+    LINE_INFO_PRL = 1 + ceil(log10(LONG_LINE_LEN))
     assert (
         len(LONG_LINE_MRK) == LINE_INFO_PRL
-    ), "Bad long line marker ({LONG_LINE_MRK}) for line info print length ({LINE_INFO_PRL})"
+    ), f"Bad long line marker ({LONG_LINE_MRK}) for line info print length ({LINE_INFO_PRL})"
 
     def format(self, record):
         if record.lineno >= self.LONG_LINE_LEN:
@@ -104,7 +104,7 @@ class CustomFormatter(logging.Formatter):
 
         ...
 ```
-Note that with our `LONG_LINE_LEN=1000` then anything `>=1000` is going to be `LINF`, which is four characters long and saved in `LONG_LINE_MRK`. It is a convenience that `ceil(log10(LONG_LINE_LEN))` would in general work out to include the additional character for the `L`. If `LONG_LINE_LEN` is in `(10**(k-1), 10**k]` then `10**(k-1) < LONG_LINE_LEN <= 10**k` and `k-1 < log10(LONG_LINE_LEN) <= k`. That implies again that `ceil(log10(LONG_LINE_LEN))=k`. This is enough to guarantee we have `k` characters total, one of which is an `L`, sufficient spaces are prepended and the line's digits are then shown.
+Note that with our `LONG_LINE_LEN=1000` then anything `>=1000` is going to be `LINF`, which is four characters long and saved in `LONG_LINE_MRK`. It is a convenience that `1+ceil(log10(LONG_LINE_LEN))` would in general work out to include the additional character for the `L`. If `LONG_LINE_LEN` is in `(10**(k-1), 10**k]` then `10**(k-1) < LONG_LINE_LEN <= 10**k` and `k-1 < log10(LONG_LINE_LEN) <= k`. That implies again that `ceil(log10(LONG_LINE_LEN))=1+k`. We would need at most `k` characters to get the display right for the number part, `+1` always for the `L`, then the format method adjusts to get to exactly `k+1`.
 
 Then we just need to construct the value of `line_info` variable in order to get a good display out.
 
