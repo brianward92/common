@@ -13,11 +13,10 @@ log = logs.get_logger()
 
 def create_parser():
     parser = argparse.ArgumentParser(description="Opens or creates journal tex file.")
-    parser.add_argument("--year", "-y", type=int, required=True)
-    parser.add_argument("--month", "-m", type=int, required=True)
-    parser.add_argument(
-        "--path", "-p", default=os.path.expanduser("~/doc/journal"), required=False
-    )
+    parser.add_argument("--year", "-y", type=int)
+    parser.add_argument("--month", "-m", type=int)
+    default_journal_path = os.path.expanduser("~/doc/journal")
+    parser.add_argument("--path", "-p", default=default_journal_path)
     return parser
 
 
@@ -28,6 +27,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
     year = args.year
     month = args.month
+    if year is None:
+        print("Year:", end=" ")
+        year = int(input())
+    if month is None:
+        print("Month:", end=" ")
+        month = int(input())
     path = args.path
     log.info(f"Opening journal for {year=} and {month=} at {path=}.")
 
