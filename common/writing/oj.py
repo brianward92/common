@@ -1,0 +1,58 @@
+import argparse
+import datetime
+import os
+import platform
+import shutil
+import subprocess
+
+
+from common.py import logs
+
+log = logs.get_logger()
+
+
+def create_parser():
+    parser = argparse.ArgumentParser(description="Opens or creates journal tex file.")
+    parser.add_argument("--year", "-y", type=int, required=True)
+    parser.add_argument("--month", "-m", type=int, required=True)
+    parser.add_argument(
+        "--path", "-p", default=os.path.expanduser("~/doc/journal"), required=False
+    )
+    return parser
+
+
+if __name__ == "__main__":
+
+    # Parser, Args
+    parser = create_parser()
+    args = parser.parse_args()
+    year = args.year
+    month = args.month
+    path = args.path
+    log.info(f"Opening journal for {year=} and {month=} at {path=}.")
+
+    # Format Year/Month Directory
+    try:
+        yyyymm = datetime.date(year, month, 1).strftime(f"%Y{os.path.sep}%m")
+    except:
+        raise ValueError(f"Cannot format inputs {year=}, {month=}!")
+
+    # Assert Template
+    template = os.path.join(path, "main.tex")
+    assert os.path.exists(template), f"Expected template file at {template}."
+
+    # Copy Template if Needed
+    journal = os.path.join(path, yyyymm, "main.tex")
+    if not os.path.exists(journal):
+        shutil.copy(template, journal)
+        log.info(f"No journal at {journal}, copied from {template}.")
+    else:
+        log.info(f"Found existing journal at {journal}.")
+
+    # Open It
+    if platform.system() == "Windows":
+        os.startfile(journal)
+    elif platform.system() == "Darwin":  # macOS
+        subprocess.call(("open", journal))
+    else:  # Linux and other Unix-like systems
+        subprocess.call(("xdg-open", journal))
