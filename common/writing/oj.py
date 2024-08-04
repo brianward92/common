@@ -49,6 +49,7 @@ if __name__ == "__main__":
     # Copy Template if Needed
     journal = os.path.join(path, yyyymm, "main.tex")
     if not os.path.exists(journal):
+        os.makedirs(journal, exist_ok=True)
         shutil.copy(template, journal)
         log.info(f"No journal at {journal}, copied from {template}.")
     else:
