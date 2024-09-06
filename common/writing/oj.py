@@ -56,9 +56,13 @@ if __name__ == "__main__":
         log.info(f"Found existing journal at {journal}.")
 
     # Open It
-    if platform.system() == "Windows":
+    plat = platform.system()
+    if plat == "Windows":
         os.startfile(journal)
-    elif platform.system() == "Darwin":  # macOS
+        log.info(f"Opened {journal} on Windows.")
+    elif plat == "Darwin":
         subprocess.call(("open", journal))
-    else:  # Linux and other Unix-like systems
+        log.info(f"Opened {journal} on Mac.")
+    else:
         subprocess.call(("xdg-open", journal))
+        log.info(f"Opened {journal} on Linux.")
