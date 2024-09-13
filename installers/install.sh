@@ -25,11 +25,6 @@ while getopts "a:s:n:" opt; do
   esac
 done
 
-# Prompt for value if name is provided
-if [ ! -z "$ENV_NAME" ]; then
-  read -p "Enter the value for $ENV_NAME: " ENV_VALUE
-fi
-
 # Get the shell configuration file
 SHELL_CONFIG=$(get_shell_config)
 
