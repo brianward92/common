@@ -33,6 +33,21 @@ add_alias_to_shell_config() {
   fi
 }
 
+add_env_var_to_shell_config() {
+  local name=$1
+  local value=$2
+  local shell_config=$3
+  local line="export $name=\"$value\""
+
+  # Check if the environment variable line exists in the shell config file
+  if ! grep -Fxq "$line" "$shell_config"; then
+    echo "$line" >> "$shell_config"
+    echo "Added $line to $shell_config"
+  else
+    echo "$line already exists in $shell_config"
+  fi
+}
+
 handle_error() {
     echo "FAILED"
     exit 1
