@@ -40,18 +40,24 @@ add_alias_to_shell_config() {
 
 
 add_env_var_to_shell_config() {
-  local name=$1
-  local value=$2
+  local var_name=$1
+  local var_value=$2
   local shell_config=$3
-  local def_line="export $name="
-  local line="export $name=\"$value\""
+  local line="export $var_name=\"$var_value\""
 
-  # Check if the environment variable definition phrase for $name exists
-  if ! grep -Fxq "$def_line" "$shell_config"; then
-    echo "$line" >> "$shell_config"
-    echo "Environment variable $line has been added to $shell_config"
+  # Check if the exact env var def line exists in the shell config file
+  if ! grep -Fxq "$line" "$shell_config"; then
+    # If similar env var def exists, update it; otherwise, add new
+    if grep -Fq "export $var_name=" "$shell_config"; then
+      sed -i.bak "/export $var_name=/d" "$shell_config"
+      echo "$line" >> "$shell_config"
+      echo "Updated env var $var_name in $shell_config"
+    else
+      echo "$line" >> "$shell_config"
+      echo "Env var $var_name has been added to $shell_config"
+    fi
   else
-    echo "Environment variable $line already exists in $shell_config"
+    echo "Env var $var_name already exists in $shell_config"
   fi
 }
 
@@ -59,4 +65,3 @@ handle_error() {
     echo "FAILED"
     exit 1
 }
-
