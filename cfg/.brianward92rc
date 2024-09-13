@@ -20,31 +20,38 @@ add_alias_to_shell_config() {
   local alias_name=$1
   local script_path=$2
   local shell_config=$3
+  local line="alias $alias_name=\"$script_path\""
 
-  if [ ! -f "$shell_config" ]; then
-    touch "$shell_config"
-  fi
-
-  if grep -q "alias $alias_name=" "$shell_config"; then
-    echo "Alias $alias_name already exists in $shell_config"
+  # Check if the exact alias line exists in the shell config file
+  if ! grep -Fxq "$line" "$shell_config"; then
+    # If similar alias exists, update it; otherwise, add new
+    if grep -Fq "alias $alias_name=" "$shell_config"; then
+      sed -i.bak "/alias $alias_name=/d" "$shell_config"
+      echo "$line" >> "$shell_config"
+      echo "Updated alias $alias_name in $shell_config"
+    else
+      echo "$line" >> "$shell_config"
+      echo "Alias $alias_name has been added to $shell_config"
+    fi
   else
-    echo "alias $alias_name=\"$script_path\"" >> "$shell_config"
-    echo "Alias $alias_name has been added to $shell_config"
+    echo "Alias $alias_name already exists in $shell_config"
   fi
 }
+
 
 add_env_var_to_shell_config() {
   local name=$1
   local value=$2
   local shell_config=$3
+  local def_line="export $name="
   local line="export $name=\"$value\""
 
-  # Check if the environment variable line exists in the shell config file
-  if ! grep -Fxq "$line" "$shell_config"; then
+  # Check if the environment variable definition phrase for $name exists
+  if ! grep -Fxq "$def_line" "$shell_config"; then
     echo "$line" >> "$shell_config"
-    echo "Added $line to $shell_config"
+    echo "Environment variable $line has been added to $shell_config"
   else
-    echo "$line already exists in $shell_config"
+    echo "Environment variable $line already exists in $shell_config"
   fi
 }
 
