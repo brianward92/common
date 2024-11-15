@@ -17,6 +17,7 @@ def create_parser():
     parser.add_argument("--month", "-m", type=int)
     default_journal_path = os.path.expanduser("~/doc/journal")
     parser.add_argument("--path", "-p", default=default_journal_path)
+    parser.add_argument("--open", "-o", action="store_true")
     return parser
 
 
@@ -27,6 +28,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     year = args.year
     month = args.month
+    do_open = args.open
     if year is None:
         print("Year:", end=" ")
         year = int(input())
@@ -49,7 +51,7 @@ if __name__ == "__main__":
     # Copy Template if Needed
     journal = os.path.join(path, yyyymm, "main.tex")
     if not os.path.exists(journal):
-        os.makedirs(journal, exist_ok=True)
+        os.makedirs(os.path.dirname(journal), exist_ok=True)
         shutil.copy(template, journal)
         log.info(f"No journal at {journal}, copied from {template}.")
     else:
@@ -58,11 +60,20 @@ if __name__ == "__main__":
     # Open It
     plat = platform.system()
     if plat == "Windows":
-        os.startfile(journal)
+        if do_open:
+            subprocess.call(["notepad", journal])
+        else:
+            os.startfile(journal)
         log.info(f"Opened {journal} on Windows.")
     elif plat == "Darwin":
-        subprocess.call(("open", journal))
+        if do_open:
+            subprocess.call(["vim", journal])
+        else:
+            subprocess.call(("open", journal))
         log.info(f"Opened {journal} on Mac.")
     else:
-        subprocess.call(("xdg-open", journal))
+        if do_open:
+            subprocess.call(["vim", journal])
+        else:
+            subprocess.call(("xdg-open", journal))
         log.info(f"Opened {journal} on Linux.")
