@@ -51,6 +51,8 @@ class CustomFormatter(logging.Formatter):
 
 
 IS_LOGGING_CONFIGURED = False
+
+
 def setup_logging():
     # Only Needs to Be Done Once
     global IS_LOGGING_CONFIGURED
