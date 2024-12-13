@@ -8,7 +8,7 @@ tell application "System Events"
                 set screenBounds to bounds of window of desktop
                 set screenWidth to item 3 of screenBounds
             end tell
-            set windowWidth to 1386
+            set windowWidth to 1512
             set xPosition to screenWidth - windowWidth
             set position of frontWindow to {xPosition, 23}
             set size of frontWindow to {windowWidth, 900}
