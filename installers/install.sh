@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ~/.brianward92rc
+source ~/.commonrc
 
 # Parse command line arguments for alias, script, and name
 while getopts "a:s:n:" opt; do
