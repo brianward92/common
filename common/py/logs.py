@@ -60,6 +60,8 @@ def setup_logging():
         return
     # Base Logger
     logging.getLogger("selectors").setLevel(logging.WARNING)
+    logging.getLogger("urllib3").setLevel(logging.WARNING)
+    logging.getLogger("matplotlib").setLevel(logging.WARNING)
     # Config
     handler = logging.StreamHandler(sys.stdout)  # where to ? / base handle
     handler.setFormatter(CustomFormatter())  # customizations
