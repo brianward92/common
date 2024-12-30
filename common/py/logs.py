@@ -59,9 +59,10 @@ def setup_logging():
     if IS_LOGGING_CONFIGURED:
         return
     # Base Logger
-    logging.getLogger("selectors").setLevel(logging.WARNING)
-    logging.getLogger("urllib3").setLevel(logging.WARNING)
-    logging.getLogger("matplotlib").setLevel(logging.WARNING)
+    logging.getLogger("selectors").setLevel(logging.INFO)
+    logging.getLogger("urllib3").setLevel(logging.INFO)
+    logging.getLogger("matplotlib").setLevel(logging.INFO)
+    logging.getLogger("asyncio").setLevel(logging.INFO)
     # Config
     handler = logging.StreamHandler(sys.stdout)  # where to ? / base handle
     handler.setFormatter(CustomFormatter())  # customizations
